@@ -1,0 +1,40 @@
+module CustomHttp;
+
+const Token =       /[^ \t\r\n:]+/;
+const Whitespace =  /[ \t]+/;
+const NewLine =     /\r?\n/;
+const OptionalNewLine= /^$|\r?\n/;
+const Body =        /.?|\{.*|(?:\r?\n)/;
+
+
+type Header = unit {
+    key:            Token;
+    :               /:/;
+    :               Whitespace;
+    value:          /[^\r\n]+/;
+    :               NewLine;
+};
+
+type Version = unit {
+    :               /HTTP\//;
+    number:         /[0-9]+\.[0-9]+/;
+};
+
+public type Requestline = unit {
+    method:         Token;
+    :               Whitespace;
+    uri:            Token;
+    :               Whitespace;
+    version:        Version;
+    :               NewLine;
+    headers:        Header[];
+    :               OptionalNewLine;
+    body:           Body;
+
+    on %done {
+        print self.method, self.uri, self.version.number;
+        for (h in self.headers)
+            print h.key, h.value;
+        print self.body;
+    }
+};
