@@ -6,7 +6,6 @@ const NewLine =     /\r?\n/;
 const OptionalNewLine= /^$|\r?\n/;
 const Body =        /.?|\{.*|(?:\r?\n)/;
 
-
 type Header = unit {
     key:            Token;
     :               /:/;
@@ -36,5 +35,19 @@ public type Requestline = unit {
         for (h in self.headers)
             print h.key, h.value;
         print self.body;
+
+        print b"";
+        print b"";
+
+
+        for (h in self.headers) {
+            if (h.key == b"Host" ) print "Host:", h.value;
+            if (h.key == b"User-Agent") print "User-Agent:", h.value;
+            if (h.key == b"Content-Type" ) print "Content-Type:", h.value;
+            if (h.key == b"Content-Length") print "Content-Length:", h.value;
+            if (h.key == b"Connection") print "Connection:", h.value;
+        }
+
+
     }
 };
